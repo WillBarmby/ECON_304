@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS-specific
+.DS_Store
+
+# Logs and temporary files
+*.log
+
+# Data (ignore raw, keep processed if needed)
+data/raw/
+!data/.gitkeep
+
+# Other common
+*.sqlite3
