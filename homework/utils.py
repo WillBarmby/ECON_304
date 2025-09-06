@@ -43,22 +43,6 @@ def unemp_graphs(
     ax.legend(loc="best", frameon=True)
 
     return data, ax
-
-def get_fred_series(series_id, api_key, start=None, end=None):
-    return
-def transform_series(series, *, op=None, periods=None, annualize=None, resample_to=None):
-    return
-def make_axes(figsize=(6.5, 2.5), dpi=300, font="Georgia", grid=True):
-    return
-
-def plot_lines(ax, df, *, styles=None, linewidth=2):
-    return 
-def add_legend(ax, loc="best", ncol=1):
-    return
-def fred_single(series_id, *, title="", ylabel="", start=None, end=None, transform=None, periods=None, annualize=None, resample_to=None, yformatter=None):
-    return
-# def fred_multi(series_specs, *, title="", ylabel="", start=None, end=None, yformatter=None, legend_loc="best", styles=None, recessions=False):
-#     return
 def fred_pct_change_graph(
         data_series,
         data_start,
@@ -75,7 +59,6 @@ def fred_pct_change_graph(
     data = fred.get_series(data_series).to_frame(name=data_series)
     data = data.loc[data_start:data_end]
     data['pct_change'] = data[data_series].pct_change(periods=pct_change_periods) * 100
-
     # Setting up graph: 
     fig, ax = plt.subplots(figsize=(6.5,2.5), dpi=dpi)
     ax.plot(data['pct_change'])
@@ -85,7 +68,6 @@ def fred_pct_change_graph(
     ax.yaxis.set_major_formatter('{x:,.0f}%')
     ax.grid()
     return data, ax
-
 
 def fred_reg_graph(
         data_series,
@@ -159,3 +141,19 @@ def LFPR_graph(
     ax.legend(loc="best", frameon=True)
 
     return data, ax
+
+def get_fred_series(series_id, api_key, start=None, end=None):
+    return
+def transform_series(series, *, op=None, periods=None, annualize=None, resample_to=None):
+    return
+def make_axes(figsize=(6.5, 2.5), dpi=300, font="Georgia", grid=True):
+    return
+
+def plot_lines(ax, df, *, styles=None, linewidth=2):
+    return 
+def add_legend(ax, loc="best", ncol=1):
+    return
+def fred_single(series_id, *, title="", ylabel="", start=None, end=None, transform=None, periods=None, annualize=None, resample_to=None, yformatter=None):
+    return
+def fred_multi(series_specs, *, title="", ylabel="", start=None, end=None, yformatter=None, legend_loc="best", styles=None, recessions=False):
+    return
