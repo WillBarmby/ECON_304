@@ -120,3 +120,42 @@ def fred_reg_graph(
         ax.grid()
     return data, ax
 
+
+def LFPR_graph(
+        title="LFPR",
+        font="Georgia",
+        xlabel="",
+        ylabel="Percent",
+        dpi=300,
+):
+    fred = Fred(api_key=FRED_API_KEY)
+    # dictionary: {FRED_code: legend_label}
+    series_dict = {
+        "CIVPART": "Civilian LFPR",
+        "LNS11300002": "Women's LFPR",
+    }
+
+    # fetch each series into a dictionary of DataFrames
+    data_frames = {}
+    for code, label in series_dict.items():
+        s = fred.get_series(code).to_frame(name=label)
+        s = s.loc["1960-01-01":"2025-07-31"]
+        data_frames[label] = s
+
+    # align into a single DataFrame
+    data = pd.concat(data_frames.values(), axis=1)
+
+    # plot
+    fig, ax = plt.subplots(figsize=(6.5, 2.5), dpi=dpi)
+    plt.rcParams["font.family"] = font
+    for label in data.columns:
+        ax.plot(data.index, data[label], label=label)
+
+    ax.set_title(title, fontname=font)
+    ax.set_xlabel(xlabel, fontname=font, fontsize = 12)
+    ax.set_ylabel(ylabel, fontname=font, fontsize = 12)
+    ax.yaxis.set_major_formatter("{x:,.0f}%")
+    ax.grid()
+    ax.legend(loc="best", frameon=True)
+
+    return data, ax
