@@ -15,8 +15,8 @@ def unemp_graphs(
     fred = Fred(api_key=FRED_API_KEY)
     # dictionary: {FRED_code: legend_label}
     series_dict = {
-        "UNRATE": "U-3",
-        "U6RATE": "U-6",
+        "UNRATE": "U3",
+        "U6RATE": "U6",
     }
 
     # fetch each series into a dictionary of DataFrames
@@ -58,10 +58,10 @@ def fred_pct_change_graph(
     fred = Fred(api_key=api_key)
     data = fred.get_series(data_series).to_frame(name=data_series)
     data = data.loc[data_start:data_end]
-    data['pct_change'] = data[data_series].pct_change(periods=pct_change_periods) * 100
+    data['pct_change_label'] = data[data_series].pct_change(periods=pct_change_periods) * 100
     # Setting up graph: 
     fig, ax = plt.subplots(figsize=(6.5,2.5), dpi=dpi)
-    ax.plot(data['pct_change'])
+    ax.plot(data['pct_change_label'])
     ax.set_title(title, fontname = font)
     ax.set_xlabel(xlabel, fontname = font)
     ax.set_ylabel(ylabel, fontname = font)
@@ -69,42 +69,8 @@ def fred_pct_change_graph(
     ax.grid()
     return data, ax
 
-def fred_reg_graph(
-        data_series,
-        title,
-        xlabel,
-        ylabel,
-        data_start = '1960-01-01',
-        data_end = None,
-        api_key = FRED_API_KEY,
-        dpi = 300,
-        font = 'Georgia',
-        fig_width = 6.5,
-        fig_height = 2.5,
-        has_grid = True,):
-    
-    fred = Fred(api_key=api_key)
-    data = fred.get_series(data_series).to_frame(name=data_series)
-    if data_end is not None:
-        data = data.loc[data_start:data_end]
-    else:
-        data = data.loc[data_start:]
-    
-    # Setting up graph: 
-    fig, ax = plt.subplots(figsize=(fig_width,fig_height), dpi=dpi)
-    ax.plot(data[data_series])
-
-    ax.set_title(title, fontname = font)
-    ax.set_xlabel(xlabel, fontname = font)
-    ax.set_ylabel(ylabel, fontname = font)
-    ax.yaxis.set_major_formatter('{x:,.0f}%')
-    if has_grid:
-        ax.grid()
-    return data, ax
-
-
 def LFPR_graph(
-        title="LFPR",
+        title="Labor Force Participation Rate",
         font="Georgia",
         xlabel="",
         ylabel="Percent",
@@ -157,3 +123,36 @@ def fred_single(series_id, *, title="", ylabel="", start=None, end=None, transfo
     return
 def fred_multi(series_specs, *, title="", ylabel="", start=None, end=None, yformatter=None, legend_loc="best", styles=None, recessions=False):
     return
+
+def fred_reg_graph(
+        data_series,
+        title,
+        xlabel,
+        ylabel,
+        data_start = '1960-01-01',
+        data_end = None,
+        api_key = FRED_API_KEY,
+        dpi = 300,
+        font = 'Georgia',
+        fig_width = 6.5,
+        fig_height = 2.5,
+        has_grid = True,):
+    
+    fred = Fred(api_key=api_key)
+    data = fred.get_series(data_series).to_frame(name=data_series)
+    if data_end is not None:
+        data = data.loc[data_start:data_end]
+    else:
+        data = data.loc[data_start:]
+    
+    # Setting up graph: 
+    fig, ax = plt.subplots(figsize=(fig_width,fig_height), dpi=dpi)
+    ax.plot(data[data_series])
+
+    ax.set_title(title, fontname = font)
+    ax.set_xlabel(xlabel, fontname = font)
+    ax.set_ylabel(ylabel, fontname = font)
+    ax.yaxis.set_major_formatter('{x:,.0f}%')
+    if has_grid:
+        ax.grid()
+    return data, ax
