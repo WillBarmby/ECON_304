@@ -68,7 +68,6 @@ def fred_pct_change_graph(
     ax.yaxis.set_major_formatter('{x:,.0f}%')
     ax.grid()
     return data, ax
-
 def LFPR_graph(
         title="Labor Force Participation Rate",
         font="Georgia",
@@ -106,53 +105,4 @@ def LFPR_graph(
     ax.grid()
     ax.legend(loc="best", frameon=True)
 
-    return data, ax
-
-def get_fred_series(series_id, api_key, start=None, end=None):
-    return
-def transform_series(series, *, op=None, periods=None, annualize=None, resample_to=None):
-    return
-def make_axes(figsize=(6.5, 2.5), dpi=300, font="Georgia", grid=True):
-    return
-
-def plot_lines(ax, df, *, styles=None, linewidth=2):
-    return 
-def add_legend(ax, loc="best", ncol=1):
-    return
-def fred_single(series_id, *, title="", ylabel="", start=None, end=None, transform=None, periods=None, annualize=None, resample_to=None, yformatter=None):
-    return
-def fred_multi(series_specs, *, title="", ylabel="", start=None, end=None, yformatter=None, legend_loc="best", styles=None, recessions=False):
-    return
-
-def fred_reg_graph(
-        data_series,
-        title,
-        xlabel,
-        ylabel,
-        data_start = '1960-01-01',
-        data_end = None,
-        api_key = FRED_API_KEY,
-        dpi = 300,
-        font = 'Georgia',
-        fig_width = 6.5,
-        fig_height = 2.5,
-        has_grid = True,):
-    
-    fred = Fred(api_key=api_key)
-    data = fred.get_series(data_series).to_frame(name=data_series)
-    if data_end is not None:
-        data = data.loc[data_start:data_end]
-    else:
-        data = data.loc[data_start:]
-    
-    # Setting up graph: 
-    fig, ax = plt.subplots(figsize=(fig_width,fig_height), dpi=dpi)
-    ax.plot(data[data_series])
-
-    ax.set_title(title, fontname = font)
-    ax.set_xlabel(xlabel, fontname = font)
-    ax.set_ylabel(ylabel, fontname = font)
-    ax.yaxis.set_major_formatter('{x:,.0f}%')
-    if has_grid:
-        ax.grid()
     return data, ax
