@@ -3,7 +3,6 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from config import FRED_API_KEY
 import pandas as pd
-# Read data
 
 def unemp_graphs(
         title="Unemployment Rates",
