@@ -60,10 +60,11 @@ def fred_pct_change_graph(
     data['pct_change_label'] = data[data_series].pct_change(periods=pct_change_periods) * 100
     # Setting up graph: 
     fig, ax = plt.subplots(figsize=(6.5,2.5), dpi=dpi)
+    plt.rcParams["font.family"] = font
     ax.plot(data['pct_change_label'])
     ax.set_title(title, fontname = font)
-    ax.set_xlabel(xlabel, fontname = font)
-    ax.set_ylabel(ylabel, fontname = font)
+    ax.set_xlabel(xlabel, fontname = font, fontsize = 12)
+    ax.set_ylabel(ylabel, fontname = font, fontsize = 12)
     ax.yaxis.set_major_formatter('{x:,.0f}%')
     ax.grid()
     return data, ax
