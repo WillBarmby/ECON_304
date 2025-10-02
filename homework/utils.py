@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from config import FRED_API_KEY
 import pandas as pd
 
+
 def unemp_graphs(
         title="Unemployment Rates",
         font="Georgia",
@@ -106,3 +107,68 @@ def LFPR_graph(
     ax.legend(loc="best", frameon=True)
 
     return data, ax
+def add_fred_series_to_df(
+    df,
+    fred_series_key,
+    fred_api_key=FRED_API_KEY,
+    series_name=None,
+    start_date=None,
+    end_date=None,
+    freq=None
+):
+    """
+    Fetches a FRED series and adds it to the provided DataFrame.
+
+    Args:
+        df (pd.DataFrame): Existing DataFrame to add the series to.
+        fred_api_key (str): Your FRED API key.
+        fred_series_key (str): FRED series code.
+        series_name (str, optional): Name for the new column. Defaults to fred_series_key.
+        start_date (str, optional): Start date for the data (YYYY-MM-DD).
+        end_date (str, optional): End date for the data (YYYY-MM-DD).
+        freq (str, optional): Pandas offset alias for frequency conversion (e.g., 'Q' for quarterly).
+
+    Returns:
+        pd.DataFrame: DataFrame with the new series added.
+    """
+    fred = Fred(api_key=fred_api_key)
+    data = fred.get_series(fred_series_key)
+    data = data.to_frame(name=series_name or fred_series_key)
+    if start_date or end_date:
+        data = data.loc[start_date:end_date]
+    if freq:
+        data = data.resample(freq).mean()
+    # Align index and join
+    df = df.join(data, how='outer')
+    return df
+
+def fetch_fred_series(
+    fred_api_key,
+    fred_series_key,
+    start_date=None,
+    end_date=None,
+    freq=None,
+    series_name=None
+):
+    """
+    Fetches a FRED series as a DataFrame.
+
+    Args:
+        fred_api_key (str): Your FRED API key.
+        fred_series_key (str): FRED series code.
+        start_date (str, optional): Start date for the data (YYYY-MM-DD).
+        end_date (str, optional): End date for the data (YYYY-MM-DD).
+        freq (str, optional): Pandas offset alias for frequency conversion.
+        series_name (str, optional): Name for the DataFrame column.
+
+    Returns:
+        pd.DataFrame: DataFrame with the series.
+    """
+    fred = Fred(api_key=fred_api_key)
+    data = fred.get_series(fred_series_key)
+    data = data.to_frame(name=series_name or fred_series_key)
+    if start_date or end_date:
+        data = data.loc[start_date:end_date]
+    if freq:
+        data = data.resample(freq).mean()
+    return data
