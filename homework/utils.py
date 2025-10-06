@@ -107,6 +107,53 @@ def LFPR_graph(
     ax.legend(loc="best", frameon=True)
 
     return data, ax
+
+def plot_dataframe_series(
+        data,
+        columns=None,
+        title="",
+        xlabel="",
+        ylabel="",
+        font="Georgia",
+        dpi=300,
+        fig_width=6.5,
+        fig_height=2.5,
+        has_grid=True,
+        yaxis_format="{x:,.0f}%",
+        show_legend=True,
+):
+    """Plot one or more columns from a pre-fetched DataFrame."""
+    if not isinstance(data, pd.DataFrame):
+        raise TypeError("data must be a pandas DataFrame")
+
+    if columns is None:
+        columns = list(data.columns)
+    elif isinstance(columns, str):
+        columns = [columns]
+
+    missing = [col for col in columns if col not in data.columns]
+    if missing:
+        raise ValueError(f"Columns not in DataFrame: {', '.join(missing)}")
+
+    plot_data = data[columns]
+
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height), dpi=dpi)
+    plt.rcParams["font.family"] = font
+    for label in plot_data.columns:
+        ax.plot(plot_data.index, plot_data[label], label=label)
+
+    ax.set_title(title, fontname=font)
+    ax.set_xlabel(xlabel, fontname=font, fontsize=12)
+    ax.set_ylabel(ylabel, fontname=font, fontsize=12)
+
+    if yaxis_format:
+        ax.yaxis.set_major_formatter(yaxis_format)
+    if has_grid:
+        ax.grid()
+    if show_legend and plot_data.shape[1] > 1:
+        ax.legend(loc="best", frameon=True)
+
+    # return plot_data, ax
 def add_fred_series_to_df(
     df,
     fred_series_key,
